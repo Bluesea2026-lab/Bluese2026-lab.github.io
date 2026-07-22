@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>📚 个人知识库 · 完全自定义版</title>
+    <title>📚 知识库 · 学习门户 v2.0</title>
     <style>
+        /* ===== 全局 ===== */
         * {
             margin: 0;
             padding: 0;
@@ -19,6 +20,7 @@
             --text-light: #55708b;
             --shadow: 0 4px 20px rgba(0, 20, 40, 0.06);
             --radius: 18px;
+            --radius-sm: 12px;
         }
         body {
             font-family: 'Inter', -apple-system, 'Segoe UI', 'PingFang SC', sans-serif;
@@ -28,11 +30,11 @@
             padding: 20px;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
         }
 
-        /* ===== 登录覆盖层 ===== */
+        /* ===== 登录覆盖层（保持不变，略） ===== */
         #loginOverlay {
             position: fixed;
             inset: 0;
@@ -117,10 +119,10 @@
             justify-content: space-between;
             align-items: center;
             background: var(--card);
-            padding: 14px 24px;
+            padding: 12px 24px;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
         .topbar h1 {
             font-size: 20px;
@@ -134,103 +136,113 @@
             font-size: 13px;
             color: var(--text-light);
         }
-        .topbar .user-badge {
+        .topbar .right {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
         }
-        .topbar .user-badge span {
-            font-size: 14px;
-            color: var(--text-light);
-        }
-        .topbar .user-badge .btn-outline {
-            padding: 6px 18px;
-            border: 1.5px solid #dce4ed;
+        .topbar .right .search-box {
+            display: flex;
+            align-items: center;
+            background: #f0f4fa;
             border-radius: 40px;
+            padding: 4px 16px;
+            gap: 6px;
+        }
+        .topbar .right .search-box input {
+            border: none;
             background: transparent;
-            font-size: 12px;
-            font-weight: 600;
+            padding: 6px 4px;
+            font-size: 14px;
+            outline: none;
+            width: 120px;
+            transition: 0.2s;
+        }
+        .topbar .right .search-box input:focus {
+            width: 180px;
+        }
+        .topbar .right .search-box .icon {
             color: var(--text-light);
+            font-size: 14px;
+        }
+        .btn {
+            padding: 6px 16px;
+            border: none;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
             transition: 0.15s;
         }
-        .topbar .user-badge .btn-outline:hover {
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #103a5e;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #dce4ed;
+            color: var(--text-light);
+        }
+        .btn-outline:hover {
             border-color: var(--primary);
             color: var(--primary);
         }
-        .topbar .user-badge .btn-logout {
-            padding: 6px 18px;
-            border: 1.5px solid #dce4ed;
-            border-radius: 40px;
+        .btn-danger-outline {
             background: transparent;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-light);
-            cursor: pointer;
-            transition: 0.15s;
-        }
-        .topbar .user-badge .btn-logout:hover {
-            border-color: #c72a2a;
+            border: 1.5px solid #f5c6cb;
             color: #c72a2a;
         }
-        .topbar .user-badge .btn-primary-sm {
-            padding: 6px 18px;
-            border: none;
-            border-radius: 40px;
-            background: var(--primary);
-            color: white;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.15s;
+        .btn-danger-outline:hover {
+            background: #f8d7da;
         }
-        .topbar .user-badge .btn-primary-sm:hover {
-            background: #103a5e;
+        .btn-sm {
+            padding: 4px 12px;
+            font-size: 12px;
         }
 
         /* ===== 分区网格 ===== */
         .section-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 18px;
-            margin-bottom: 28px;
+            gap: 16px;
+            margin-bottom: 24px;
         }
         .section-card {
             background: var(--card);
             border-radius: var(--radius);
-            padding: 22px 20px 20px;
+            padding: 18px 18px 16px;
             box-shadow: var(--shadow);
             cursor: pointer;
             transition: 0.15s;
             border-left: 5px solid var(--primary);
-            text-decoration: none;
-            color: var(--text);
-            display: block;
             position: relative;
         }
         .section-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(0, 20, 40, 0.08);
+            box-shadow: 0 8px 30px rgba(0, 20, 40, 0.10);
         }
         .section-card .emoji {
-            font-size: 32px;
+            font-size: 28px;
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         .section-card h3 {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 700;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         .section-card p {
             font-size: 13px;
             color: var(--text-light);
-            line-height: 1.5;
+            line-height: 1.4;
         }
         .section-card .count {
             display: inline-block;
-            margin-top: 10px;
+            margin-top: 8px;
             font-size: 12px;
             background: var(--primary-light);
             color: var(--primary);
@@ -240,10 +252,10 @@
         }
         .section-card .card-actions {
             position: absolute;
-            top: 12px;
+            top: 10px;
             right: 12px;
             display: flex;
-            gap: 6px;
+            gap: 4px;
             opacity: 0;
             transition: 0.15s;
         }
@@ -254,27 +266,26 @@
             background: rgba(255, 255, 255, 0.9);
             border: 1px solid #dce4ed;
             border-radius: 40px;
-            padding: 2px 10px;
+            padding: 1px 10px;
             font-size: 12px;
             cursor: pointer;
-            transition: 0.1s;
-            color: var(--text-light);
-        }
-        .section-card .card-actions button:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
         }
         .section-card .card-actions .del:hover {
             background: #c72a2a;
+            color: white;
             border-color: #c72a2a;
+        }
+        @media (max-width: 600px) {
+            .section-card .card-actions {
+                opacity: 1;
+            }
         }
 
         /* ===== 内容区 ===== */
         .content-area {
             background: var(--card);
             border-radius: var(--radius);
-            padding: 24px 28px;
+            padding: 20px 24px;
             box-shadow: var(--shadow);
             min-height: 200px;
             display: none;
@@ -286,29 +297,53 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 6px 16px;
+            padding: 4px 14px;
             border: 1.5px solid #dce4ed;
             border-radius: 40px;
             font-size: 13px;
             font-weight: 600;
             background: transparent;
             cursor: pointer;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             color: var(--text-light);
-            transition: 0.15s;
         }
         .content-area .back:hover {
             border-color: var(--primary);
             color: var(--primary);
         }
-        .content-area h2 {
-            font-size: 20px;
+        .content-area .header-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 4px;
+        }
+        .content-area .header-row h2 {
+            font-size: 20px;
+        }
+        .content-area .header-row .tag-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+        }
+        .content-area .header-row .tag-filter .tag-btn {
+            background: #eef2f7;
+            border: none;
+            padding: 2px 12px;
+            border-radius: 40px;
+            font-size: 12px;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+        .content-area .header-row .tag-filter .tag-btn.active {
+            background: var(--primary);
+            color: white;
         }
         .content-area .sub {
             color: var(--text-light);
             font-size: 14px;
-            margin-bottom: 18px;
+            margin-bottom: 14px;
         }
         .content-area .item-list {
             display: flex;
@@ -321,22 +356,47 @@
             align-items: center;
             padding: 12px 16px;
             background: #f8fafd;
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             border: 1px solid #eef2f7;
             transition: 0.1s;
+            cursor: pointer;
         }
         .content-area .item-list .item:hover {
             background: #f0f6ff;
+            border-color: #cbd6e3;
         }
-        .content-area .item-list .item .name {
+        .content-area .item-list .item .left {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .content-area .item-list .item .left .name {
             font-weight: 500;
         }
-        .content-area .item-list .item .meta {
+        .content-area .item-list .item .left .tags {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        .content-area .item-list .item .left .tags .tag {
+            background: #e8edf4;
+            font-size: 11px;
+            padding: 0 8px;
+            border-radius: 40px;
+            color: var(--text-light);
+        }
+        .content-area .item-list .item .right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .content-area .item-list .item .right .meta {
             font-size: 12px;
             color: var(--text-light);
         }
         .content-area .add-btn {
-            margin-top: 16px;
+            margin-top: 14px;
             padding: 10px 20px;
             border: 2px dashed #dce4ed;
             border-radius: 40px;
@@ -360,18 +420,8 @@
             text-align: center;
         }
 
-        /* ===== 底部 ===== */
-        .footer {
-            text-align: center;
-            font-size: 13px;
-            color: var(--text-light);
-            margin-top: 28px;
-            padding: 12px;
-            border-top: 1px solid #eef2f7;
-        }
-
-        /* ===== 模态框 ===== */
-        .modal {
+        /* ===== 详情弹窗 ===== */
+        .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
@@ -382,66 +432,97 @@
             z-index: 10000;
             padding: 20px;
         }
-        .modal.show {
+        .modal-overlay.show {
             display: flex;
         }
-        .modal-box {
+        .modal-detail {
             background: white;
-            max-width: 460px;
+            max-width: 560px;
             width: 100%;
             border-radius: 24px;
-            padding: 32px 36px;
+            padding: 28px 32px;
             box-shadow: 0 40px 80px rgba(0, 0, 0, 0.15);
+            max-height: 90vh;
+            overflow-y: auto;
         }
-        .modal-box h2 {
+        .modal-detail .close-btn {
+            float: right;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-light);
+            cursor: pointer;
+        }
+        .modal-detail h2 {
             font-size: 20px;
-            margin-bottom: 16px;
+            margin-bottom: 4px;
+            padding-right: 30px;
         }
-        .modal-box label {
+        .modal-detail .detail-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+        .modal-detail .detail-tags .tag {
+            background: #e8edf4;
+            font-size: 12px;
+            padding: 0 12px;
+            border-radius: 40px;
+            color: var(--text-light);
+        }
+        .modal-detail .field {
+            margin-bottom: 14px;
+        }
+        .modal-detail .field label {
             font-weight: 600;
             font-size: 13px;
             display: block;
-            margin: 14px 0 4px 0;
-            color: #1a2a44;
+            margin-bottom: 2px;
+            color: var(--text-light);
         }
-        .modal-box input,
-        .modal-box select {
+        .modal-detail .field input,
+        .modal-detail .field textarea {
             width: 100%;
-            padding: 10px 14px;
+            padding: 8px 12px;
             border: 1px solid #dce4ed;
-            border-radius: 12px;
+            border-radius: 8px;
             font-size: 14px;
             font-family: inherit;
         }
-        .modal-box .actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            justify-content: flex-end;
+        .modal-detail .field textarea {
+            min-height: 60px;
+            resize: vertical;
         }
-        .modal-box .btn {
-            padding: 8px 24px;
-            border: none;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.15s;
-        }
-        .modal-box .btn-primary {
+        .modal-detail .field .link-btn {
+            display: inline-block;
             background: var(--primary);
             color: white;
+            padding: 6px 16px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 4px;
         }
-        .modal-box .btn-primary:hover {
+        .modal-detail .field .link-btn:hover {
             background: #103a5e;
         }
-        .modal-box .btn-outline {
-            background: transparent;
-            border: 1.5px solid #dce4ed;
-            color: var(--text-light);
+        .modal-detail .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            justify-content: flex-end;
         }
-        .modal-box .btn-outline:hover {
-            border-color: var(--primary);
-            color: var(--primary);
+
+        /* ===== 底部 ===== */
+        .footer {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 24px;
+            padding: 12px;
+            border-top: 1px solid #eef2f7;
         }
 
         /* ===== 响应式 ===== */
@@ -453,56 +534,38 @@
                 flex-direction: column;
                 align-items: stretch;
                 gap: 10px;
-                padding: 14px 18px;
+                padding: 12px 16px;
             }
-            .topbar h1 {
-                font-size: 18px;
+            .topbar .right {
+                flex-wrap: wrap;
+            }
+            .topbar .right .search-box input {
+                width: 100px;
+            }
+            .topbar .right .search-box input:focus {
+                width: 140px;
             }
             .section-grid {
                 grid-template-columns: 1fr 1fr;
                 gap: 12px;
             }
             .section-card {
-                padding: 16px 14px;
+                padding: 14px 14px 12px;
             }
             .section-card .emoji {
-                font-size: 26px;
-            }
-            .section-card .card-actions {
-                opacity: 1;
-                top: 8px;
-                right: 8px;
-            }
-            .section-card .card-actions button {
-                font-size: 10px;
-                padding: 1px 8px;
+                font-size: 24px;
             }
             .content-area {
-                padding: 18px 16px;
+                padding: 16px;
             }
-            .login-box {
-                padding: 30px 24px;
-                margin: 0 12px;
-            }
-            .modal-box {
-                padding: 24px 20px;
+            .modal-detail {
+                padding: 20px 18px;
             }
         }
         @media (max-width: 400px) {
             .section-grid {
                 grid-template-columns: 1fr;
             }
-        }
-
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #eef2f7;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd6e3;
-            border-radius: 10px;
         }
     </style>
 </head>
@@ -522,33 +585,34 @@
     </div>
 
     <!-- ===== 主界面 ===== -->
-    <div class="container" id="mainApp">
+    <div class="container" id="mainApp" style="display:none;">
 
         <!-- 顶栏 -->
         <header class="topbar">
-            <h1>
-                📚 知识库
-                <small>· 完全自定义</small>
-            </h1>
-            <div class="user-badge">
-                <span>👤 本人</span>
-                <button class="btn-primary-sm" id="addSectionBtn">➕ 新建分区</button>
-                <button class="btn-outline" onclick="exportData()">📤 备份</button>
-                <button class="btn-outline" onclick="document.getElementById('importFile').click()">📥 恢复</button>
+            <h1>📚 知识库 <small>· 学习门户 v2.0</small></h1>
+            <div class="right">
+                <div class="search-box">
+                    <span class="icon">🔍</span>
+                    <input type="text" id="globalSearch" placeholder="搜索条目..." oninput="renderAll()">
+                </div>
+                <button class="btn btn-primary" id="addSectionBtn">➕ 新建分区</button>
+                <button class="btn btn-outline" onclick="exportData()">📤 备份</button>
+                <button class="btn btn-outline" onclick="document.getElementById('importFile').click()">📥 恢复</button>
                 <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
-                <button class="btn-logout" id="logoutBtn">退出</button>
+                <button class="btn btn-outline" id="logoutBtn">退出</button>
             </div>
         </header>
 
         <!-- 分区卡片 -->
-        <div class="section-grid" id="sectionGrid">
-            <!-- 由 JavaScript 动态渲染 -->
-        </div>
+        <div class="section-grid" id="sectionGrid"></div>
 
         <!-- 内容展示区 -->
         <div class="content-area" id="contentArea">
             <button class="back" id="backBtn">← 返回</button>
-            <h2 id="contentTitle">标题</h2>
+            <div class="header-row">
+                <h2 id="contentTitle">标题</h2>
+                <div class="tag-filter" id="tagFilterBar"></div>
+            </div>
             <div class="sub" id="contentSub">描述</div>
             <div class="item-list" id="itemList">
                 <div class="empty-state">📭 暂无内容，点击下方添加</div>
@@ -557,20 +621,47 @@
         </div>
 
         <div class="footer">
-            📌 所有分区和条目均可自定义 · 数据保存在本地浏览器
+            📌 数据保存在本地浏览器 · 建议定期备份
         </div>
     </div>
 
-    <!-- ===== 模态框：新建/编辑分区 ===== -->
-    <div class="modal" id="sectionModal">
-        <div class="modal-box">
+    <!-- ===== 详情弹窗 ===== -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-detail">
+            <button class="close-btn" onclick="closeDetail()">✕</button>
+            <h2 id="detailTitle">条目名称</h2>
+            <div class="detail-tags" id="detailTags"></div>
+
+            <div class="field">
+                <label>📎 资料链接（百度/阿里云盘等）</label>
+                <input type="url" id="detailLink" placeholder="粘贴分享链接...">
+                <a href="#" id="detailLinkBtn" class="link-btn" target="_blank">📂 打开资料</a>
+            </div>
+
+            <div class="field">
+                <label>🏷️ 标签（用逗号分隔）</label>
+                <input type="text" id="detailTagsInput" placeholder="例如：量子计算, 复习笔记, 2025">
+            </div>
+
+            <div class="field">
+                <label>📝 个人备注</label>
+                <textarea id="detailNote" placeholder="记录你的思考、重点、待办..."></textarea>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-outline" onclick="closeDetail()">关闭</button>
+                <button class="btn btn-primary" id="saveDetailBtn">💾 保存修改</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 模态框：新建/编辑分区（略，保持原样） ===== -->
+    <div class="modal-overlay" id="sectionModal">
+        <div class="modal-detail">
             <h2 id="sectionModalTitle">新建分区</h2>
-            <label>分区名称 *</label>
-            <input type="text" id="sectionNameInput" placeholder="例如：量子计算笔记">
-            <label>图标 (Emoji)</label>
-            <input type="text" id="sectionEmojiInput" placeholder="例如：🔬" value="📁">
-            <label>描述</label>
-            <input type="text" id="sectionDescInput" placeholder="简短描述该分区的用途">
+            <div class="field"><label>分区名称 *</label><input type="text" id="sectionNameInput" placeholder="例如：量子计算笔记"></div>
+            <div class="field"><label>图标 (Emoji)</label><input type="text" id="sectionEmojiInput" placeholder="例如：🔬" value="📁"></div>
+            <div class="field"><label>描述</label><input type="text" id="sectionDescInput" placeholder="简短描述该分区的用途"></div>
             <div class="actions">
                 <button class="btn btn-outline" onclick="closeSectionModal()">取消</button>
                 <button class="btn btn-primary" id="saveSectionBtn">保存</button>
@@ -584,17 +675,18 @@
         // ============================================================
         const CONFIG = {
             password: 'study2025',
-            storageKey: 'knowledge_base_custom'
+            storageKey: 'knowledge_base_v2'
         };
 
-        // ============================================================
-        // 数据管理（完全可自定义）
-        // ============================================================
         let data = {};
         let editingSectionKey = null;
         let currentSection = null;
+        let currentTagFilter = null;
+        let editingItemId = null;
 
-        // 默认分区（首次使用时初始化）
+        // ============================================================
+        // 默认分区
+        // ============================================================
         function getDefaultSections() {
             return {
                 notes: {
@@ -636,44 +728,29 @@
             };
         }
 
+        // ============================================================
+        // 数据管理
+        // ============================================================
         function loadData() {
             const stored = localStorage.getItem(CONFIG.storageKey);
             if (stored) {
                 try {
                     const parsed = JSON.parse(stored);
-                    // 检查数据是否完整（每个分区必须有 items 数组）
                     let valid = true;
                     for (const key of Object.keys(parsed)) {
-                        if (!parsed[key].items || !Array.isArray(parsed[key].items)) {
-                            valid = false;
-                            break;
-                        }
-                        if (!parsed[key].label || !parsed[key].icon) {
-                            valid = false;
-                            break;
-                        }
+                        if (!parsed[key].items || !Array.isArray(parsed[key].items)) { valid = false; break; }
+                        if (!parsed[key].label || !parsed[key].icon) { valid = false; break; }
                     }
-                    if (valid && Object.keys(parsed).length > 0) {
-                        data = parsed;
-                        return;
-                    }
-                } catch (e) {
-                    // 数据损坏，使用默认
-                }
+                    if (valid && Object.keys(parsed).length > 0) { data = parsed; return; }
+                } catch (e) {}
             }
-            // 首次使用或数据损坏，初始化默认分区
             data = getDefaultSections();
             saveData();
         }
 
         function saveData() {
             localStorage.setItem(CONFIG.storageKey, JSON.stringify(data));
-            renderSections();
-            updateCounts();
-        }
-
-        function getSectionKeys() {
-            return Object.keys(data);
+            renderAll();
         }
 
         function getItems(sectionKey) {
@@ -684,39 +761,26 @@
         // 分区操作
         // ============================================================
         function addSection(key, label, icon, desc) {
-            if (data[key]) {
-                alert('该分区标识已存在，请换一个');
-                return false;
-            }
-            data[key] = {
-                label: label,
-                icon: icon || '📁',
-                desc: desc || '',
-                items: []
-            };
+            if (data[key]) { alert('该分区标识已存在'); return false; }
+            data[key] = { label, icon: icon || '📁', desc: desc || '', items: [] };
             saveData();
             return true;
         }
 
         function updateSection(key, label, icon, desc) {
             if (!data[key]) return false;
-            data[key].label = label;
-            data[key].icon = icon || '📁';
-            data[key].desc = desc || '';
+            data[key] = { ...data[key], label, icon: icon || '📁', desc: desc || '' };
             saveData();
             return true;
         }
 
         function deleteSection(key) {
             if (!data[key]) return false;
-            if (getItems(key).length > 0) {
-                if (!confirm(`分区「${data[key].label}」中有 ${getItems(key).length} 个条目，确定要删除整个分区吗？`)) {
-                    return false;
-                }
+            const count = getItems(key).length;
+            if (count > 0) {
+                if (!confirm(`分区「${data[key].label}」中有 ${count} 个条目，确定删除？`)) return false;
             } else {
-                if (!confirm(`确定要删除分区「${data[key].label}」吗？`)) {
-                    return false;
-                }
+                if (!confirm(`确定删除分区「${data[key].label}」？`)) return false;
             }
             delete data[key];
             saveData();
@@ -724,123 +788,185 @@
         }
 
         // ============================================================
-        // 条目操作
+        // 条目操作（升级版：支持链接、标签、备注）
         // ============================================================
-        function addItem(sectionKey, name, meta = '') {
+        function addItem(sectionKey, name, link = '', tags = '', note = '') {
             if (!data[sectionKey]) return;
             data[sectionKey].items.push({
                 id: Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
                 name: name,
-                meta: meta,
+                link: link || '',
+                tags: tags || '',
+                note: note || '',
                 createdAt: new Date().toLocaleDateString()
             });
             saveData();
             renderItems(sectionKey);
         }
 
-        function deleteItem(sectionKey, id) {
-            if (!data[sectionKey]) return;
-            data[sectionKey].items = data[sectionKey].items.filter(item => item.id !== id);
-            saveData();
-            renderItems(sectionKey);
-        }
-
-        function updateItem(sectionKey, id, newName, newMeta) {
+        function updateItem(sectionKey, id, name, link, tags, note) {
             if (!data[sectionKey]) return;
             const item = data[sectionKey].items.find(it => it.id === id);
             if (item) {
-                item.name = newName;
-                item.meta = newMeta || item.meta;
+                item.name = name || item.name;
+                item.link = link !== undefined ? link : item.link;
+                item.tags = tags !== undefined ? tags : item.tags;
+                item.note = note !== undefined ? note : item.note;
                 saveData();
                 renderItems(sectionKey);
             }
         }
 
+        function deleteItem(sectionKey, id) {
+            if (!data[sectionKey]) return;
+            if (!confirm('确定删除该条目吗？')) return;
+            data[sectionKey].items = data[sectionKey].items.filter(it => it.id !== id);
+            saveData();
+            renderItems(sectionKey);
+        }
+
+        function getItem(sectionKey, id) {
+            if (!data[sectionKey]) return null;
+            return data[sectionKey].items.find(it => it.id === id) || null;
+        }
+
+        // ============================================================
+        // 搜索与标签
+        // ============================================================
+        function getAllItems() {
+            const result = [];
+            for (const [sectionKey, section] of Object.entries(data)) {
+                for (const item of section.items) {
+                    result.push({ ...item, sectionKey, sectionLabel: section.label });
+                }
+            }
+            return result;
+        }
+
+        function searchItems(query) {
+            if (!query.trim()) return getAllItems();
+            const q = query.trim().toLowerCase();
+            return getAllItems().filter(item =>
+                item.name.toLowerCase().includes(q) ||
+                (item.tags && item.tags.toLowerCase().includes(q)) ||
+                (item.note && item.note.toLowerCase().includes(q))
+            );
+        }
+
         // ============================================================
         // 渲染
         // ============================================================
+        function renderAll() {
+            renderSections();
+            if (currentSection) renderItems(currentSection);
+            else document.getElementById('contentArea').classList.remove('active');
+            updateCounts();
+        }
+
         function renderSections() {
             const grid = document.getElementById('sectionGrid');
-            const keys = getSectionKeys();
-
+            const keys = Object.keys(data);
             if (keys.length === 0) {
-                grid.innerHTML = `
-                    <div style="grid-column:1/-1; text-align:center; padding:60px 20px; color:#6b7f98; background:white; border-radius:20px;">
-                        <h3 style="color:#1e2a41; margin-bottom:6px;">📭 暂无分区</h3>
-                        <p style="font-size:14px;">点击右上角「新建分区」开始创建</p>
-                    </div>
-                `;
+                grid.innerHTML =
+                    `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#6b7f98;background:white;border-radius:20px;"><h3 style="color:#1e2a41;">📭 暂无分区</h3><p>点击「新建分区」开始创建</p></div>`;
                 return;
             }
-
             grid.innerHTML = keys.map(key => {
-                const section = data[key];
-                const itemCount = section.items.length;
+                const s = data[key];
+                const count = s.items.length;
                 return `
                     <div class="section-card" data-section="${key}">
                         <div class="card-actions">
-                            <button onclick="event.stopPropagation(); editSection('${key}')" title="编辑分区">✏️</button>
-                            <button class="del" onclick="event.stopPropagation(); deleteSection('${key}')" title="删除分区">✕</button>
+                            <button onclick="event.stopPropagation(); editSectionUI('${key}')">✏️</button>
+                            <button class="del" onclick="event.stopPropagation(); deleteSection('${key}')">✕</button>
                         </div>
-                        <span class="emoji">${section.icon || '📁'}</span>
-                        <h3>${section.label}</h3>
-                        <p>${section.desc || '无描述'}</p>
-                        <span class="count">${itemCount} 项</span>
+                        <span class="emoji">${s.icon || '📁'}</span>
+                        <h3>${s.label}</h3>
+                        <p>${s.desc || '无描述'}</p>
+                        <span class="count">${count} 项</span>
                     </div>
                 `;
             }).join('');
-
-            // 绑定点击事件
             grid.querySelectorAll('.section-card').forEach(card => {
                 card.addEventListener('click', function() {
                     const key = this.dataset.section;
                     if (key) openSection(key);
                 });
             });
-
-            updateCounts();
-        }
-
-        function renderItems(sectionKey) {
-            const items = getItems(sectionKey);
-            const list = document.getElementById('itemList');
-
-            if (items.length === 0) {
-                list.innerHTML = `<div class="empty-state">📭 暂无内容，点击下方添加</div>`;
-                return;
-            }
-
-            list.innerHTML = items.map(item => `
-                <div class="item">
-                    <span class="name">${escapeHtml(item.name)}</span>
-                    <span style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-                        <span class="meta">${item.meta || ''} ${item.createdAt ? '· '+item.createdAt : ''}</span>
-                        <button onclick="editItem('${sectionKey}','${item.id}')" style="background:none;border:none;color:var(--primary);cursor:pointer;font-size:14px;">✏️</button>
-                        <button onclick="deleteItem('${sectionKey}','${item.id}')" style="background:none;border:none;color:#c72a2a;cursor:pointer;font-size:16px;">✕</button>
-                    </span>
-                </div>
-            `).join('');
-        }
-
-        function updateCounts() {
-            // 不需要单独更新 counts，renderSections 中已包含
         }
 
         function openSection(sectionKey) {
             currentSection = sectionKey;
-            const section = data[sectionKey];
-            if (!section) return;
-
-            document.getElementById('contentTitle').textContent = `${section.icon || '📁'} ${section.label}`;
-            document.getElementById('contentSub').textContent = section.desc || '无描述';
+            currentTagFilter = null;
+            const s = data[sectionKey];
+            if (!s) return;
+            document.getElementById('contentTitle').textContent = `${s.icon || '📁'} ${s.label}`;
+            document.getElementById('contentSub').textContent = s.desc || '无描述';
             document.getElementById('contentArea').classList.add('active');
             renderItems(sectionKey);
             document.getElementById('contentArea').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        function closeContent() {
-            document.getElementById('contentArea').classList.remove('active');
-            currentSection = null;
+        function renderItems(sectionKey) {
+            const items = getItems(sectionKey);
+            const list = document.getElementById('itemList');
+            const filterBar = document.getElementById('tagFilterBar');
+
+            // 收集所有标签
+            const allTags = new Set();
+            items.forEach(it => {
+                if (it.tags) it.tags.split(',').forEach(t => { const tag = t.trim(); if (tag) allTags.add(tag); });
+            });
+
+            let filtered = items;
+            if (currentTagFilter) {
+                filtered = items.filter(it => it.tags && it.tags.split(',').some(t => t.trim() === currentTagFilter));
+            }
+
+            // 渲染标签过滤器
+            filterBar.innerHTML = '';
+            if (allTags.size > 0) {
+                const clearBtn = document.createElement('button');
+                clearBtn.textContent = '全部';
+                clearBtn.className = 'tag-btn' + (currentTagFilter === null ? ' active' : '');
+                clearBtn.onclick = () => { currentTagFilter = null;
+                    renderItems(sectionKey); };
+                filterBar.appendChild(clearBtn);
+                allTags.forEach(tag => {
+                    const btn = document.createElement('button');
+                    btn.textContent = '#' + tag;
+                    btn.className = 'tag-btn' + (currentTagFilter === tag ? ' active' : '');
+                    btn.onclick = () => { currentTagFilter = tag;
+                        renderItems(sectionKey); };
+                    filterBar.appendChild(btn);
+                });
+            }
+
+            if (filtered.length === 0) {
+                list.innerHTML = `<div class="empty-state">📭 ${items.length === 0 ? '暂无内容，点击下方添加' : '没有匹配该标签的条目'}</div>`;
+                return;
+            }
+
+            list.innerHTML = filtered.map(item => {
+                const tags = item.tags ? item.tags.split(',').map(t => t.trim()).filter(Boolean) : [];
+                return `
+                    <div class="item" onclick="openDetail('${sectionKey}','${item.id}')">
+                        <div class="left">
+                            <span class="name">${escapeHtml(item.name)}</span>
+                            ${tags.length > 0 ? `<div class="tags">${tags.map(t => `<span class="tag">#${escapeHtml(t)}</span>`).join('')}</div>` : ''}
+                        </div>
+                        <div class="right">
+                            ${item.link ? `<span style="font-size:12px;color:var(--text-light);">🔗</span>` : ''}
+                            <span class="meta">${item.createdAt || ''}</span>
+                            <button onclick="event.stopPropagation(); deleteItem('${sectionKey}','${item.id}')" style="background:none;border:none;color:#c72a2a;cursor:pointer;font-size:16px;">✕</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateCounts() {
+            // 在渲染分区时已更新
         }
 
         function escapeHtml(text) {
@@ -850,243 +976,8 @@
         }
 
         // ============================================================
-        // 登录逻辑
+        // 搜索
         // ============================================================
-        function checkLogin() {
-            return sessionStorage.getItem('knowledge_logged_in') === 'true';
-        }
-
-        function doLogin(pwd) {
-            if (pwd === CONFIG.password) {
-                sessionStorage.setItem('knowledge_logged_in', 'true');
-                document.getElementById('loginOverlay').classList.add('hidden');
-                document.getElementById('mainApp').style.display = 'block';
-                document.getElementById('loginError').textContent = '';
-                loadData();
-                return true;
-            } else {
-                document.getElementById('loginError').textContent = '❌ 密码错误，请重试';
-                return false;
-            }
-        }
-
-        function doLogout() {
-            sessionStorage.removeItem('knowledge_logged_in');
-            document.getElementById('loginOverlay').classList.remove('hidden');
-            document.getElementById('mainApp').style.display = 'none';
-            document.getElementById('pwdInput').value = '';
-            document.getElementById('loginError').textContent = '';
-        }
-
-        // ============================================================
-        // 模态框：新建/编辑分区
-        // ============================================================
-        function openSectionModal(key = null) {
-            const modal = document.getElementById('sectionModal');
-            modal.classList.add('show');
-
-            if (key) {
-                // 编辑模式
-                editingSectionKey = key;
-                document.getElementById('sectionModalTitle').textContent = '编辑分区';
-                document.getElementById('sectionNameInput').value = data[key].label || '';
-                document.getElementById('sectionEmojiInput').value = data[key].icon || '📁';
-                document.getElementById('sectionDescInput').value = data[key].desc || '';
-                document.getElementById('saveSectionBtn').textContent = '更新';
-            } else {
-                // 新建模式
-                editingSectionKey = null;
-                document.getElementById('sectionModalTitle').textContent = '新建分区';
-                document.getElementById('sectionNameInput').value = '';
-                document.getElementById('sectionEmojiInput').value = '📁';
-                document.getElementById('sectionDescInput').value = '';
-                document.getElementById('saveSectionBtn').textContent = '创建';
-            }
-            document.getElementById('sectionNameInput').focus();
-        }
-
-        function closeSectionModal() {
-            document.getElementById('sectionModal').classList.remove('show');
-            editingSectionKey = null;
-        }
-
-        function saveSectionFromModal() {
-            const name = document.getElementById('sectionNameInput').value.trim();
-            const icon = document.getElementById('sectionEmojiInput').value.trim() || '📁';
-            const desc = document.getElementById('sectionDescInput').value.trim();
-
-            if (!name) {
-                alert('请输入分区名称');
-                return;
-            }
-
-            if (editingSectionKey) {
-                // 更新
-                updateSection(editingSectionKey, name, icon, desc);
-            } else {
-                // 新建：生成 key（拼音或简写）
-                let key = name.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fa5]/g, '');
-                if (!key) key = 'section_' + Date.now().toString(36);
-                // 如果 key 已存在，追加数字
-                let finalKey = key;
-                let counter = 1;
-                while (data[finalKey]) {
-                    finalKey = key + '_' + counter;
-                    counter++;
-                }
-                addSection(finalKey, name, icon, desc);
-            }
-            closeSectionModal();
-        }
-
-        // ============================================================
-        // 编辑条目
-        // ============================================================
-        function editItem(sectionKey, id) {
-            const items = getItems(sectionKey);
-            const item = items.find(it => it.id === id);
-            if (!item) return;
-
-            const newName = prompt('修改条目名称：', item.name);
-            if (newName !== null && newName.trim()) {
-                const newMeta = prompt('修改备注（可选）：', item.meta || '');
-                updateItem(sectionKey, id, newName.trim(), newMeta || '');
-            }
-        }
-
-        function editSection(key) {
-            openSectionModal(key);
-        }
-
-        // ============================================================
-        // 导入导出
-        // ============================================================
-        function exportData() {
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `knowledge_backup_${new Date().toISOString().slice(0,10)}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-
-        function importData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const imported = JSON.parse(e.target.result);
-                    // 验证数据格式
-                    let valid = true;
-                    for (const key of Object.keys(imported)) {
-                        if (!imported[key].items || !Array.isArray(imported[key].items)) {
-                            valid = false;
-                            break;
-                        }
-                        if (!imported[key].label) {
-                            valid = false;
-                            break;
-                        }
-                    }
-                    if (!valid || Object.keys(imported).length === 0) {
-                        alert('❌ 数据格式无效');
-                        return;
-                    }
-                    if (confirm(`将导入 ${Object.keys(imported).length} 个分区，是否覆盖当前数据？（取消则追加）`)) {
-                        data = imported;
-                    } else {
-                        // 追加：合并分区，注意重名处理
-                        for (const key of Object.keys(imported)) {
-                            if (data[key]) {
-                                // 重名，追加到现有分区
-                                data[key].items = data[key].items.concat(imported[key].items);
-                            } else {
-                                data[key] = imported[key];
-                            }
-                        }
-                    }
-                    saveData();
-                    alert('✅ 导入成功！');
-                } catch (err) {
-                    alert('❌ 解析失败，请检查 JSON 格式');
-                }
-            };
-            reader.readAsText(file);
-            event.target.value = '';
-        }
-
-        // ============================================================
-        // 修改密码
-        // ============================================================
-        window.changePassword = function(newPwd) {
-            if (newPwd && newPwd.length >= 4) {
-                CONFIG.password = newPwd;
-                alert('✅ 密码已更新！请记住新密码。');
-            } else {
-                alert('❌ 密码至少 4 位');
-            }
-        };
-
-        // ============================================================
-        // 初始化
-        // ============================================================
-        function init() {
-            // 登录
-            document.getElementById('loginBtn').addEventListener('click', function() {
-                const pwd = document.getElementById('pwdInput').value;
-                doLogin(pwd);
-            });
-            document.getElementById('pwdInput').addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    document.getElementById('loginBtn').click();
-                }
-            });
-
-            document.getElementById('logoutBtn').addEventListener('click', doLogout);
-
-            // 新建分区
-            document.getElementById('addSectionBtn').addEventListener('click', function() {
-                openSectionModal();
-            });
-
-            // 模态框
-            document.getElementById('saveSectionBtn').addEventListener('click', saveSectionFromModal);
-            document.getElementById('sectionModal').addEventListener('click', function(e) {
-                if (e.target === this) closeSectionModal();
-            });
-            // 回车键保存
-            document.getElementById('sectionNameInput').addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    document.getElementById('saveSectionBtn').click();
-                }
-            });
-
-            // 返回
-            document.getElementById('backBtn').addEventListener('click', closeContent);
-
-            // 添加条目
-            document.getElementById('addItemBtn').addEventListener('click', function() {
-                if (!currentSection) return;
-                const name = prompt('请输入条目名称：');
-                if (name && name.trim()) {
-                    const meta = prompt('备注（可选，如日期或分类）：') || '';
-                    addItem(currentSection, name.trim(), meta);
-                }
-            });
-
-            // 检查登录状态
-            if (checkLogin()) {
-                document.getElementById('loginOverlay').classList.add('hidden');
-                document.getElementById('mainApp').style.display = 'block';
-                loadData();
-            } else {
-                document.getElementById('mainApp').style.display = 'none';
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', init);
-    </script>
-</body>
-</html>
+        function renderSearchResults(query) {
+            const results = searchItems(query);
+            const
